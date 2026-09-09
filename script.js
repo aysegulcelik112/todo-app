@@ -2,8 +2,59 @@ const todoInput = document.getElementById('todo-input');
 const addButton = document.getElementById('add-btn');
 const todoList = document.getElementById('todo-list');
 const clearAllButton = document.getElementById('clear-all-btn');
+const STORAGE_KEY = 'kodlama-ajandam-items';
+let memoryTasks = [];
 
-function createTodoItem(value) {
+function readStorage() {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw !== null) {
+        return JSON.parse(raw);
+      }
+    }
+  } catch (error) {
+    // Storage may be blocked in some browser contexts.
+  }
+
+  return memoryTasks;
+}
+
+function writeStorage(tasks) {
+  memoryTasks = tasks;
+
+  try {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    }
+  } catch (error) {
+    // Storage may be blocked in some browser contexts.
+  }
+}
+
+function loadTasks() {
+  const storedTasks = readStorage();
+
+  if (!Array.isArray(storedTasks)) {
+    return [];
+  }
+
+  return storedTasks
+    .filter((task) => task && typeof task.text === 'string')
+    .map((task) => ({
+      text: task.text.trim(),
+      completed: Boolean(task.completed)
+    }))
+    .filter((task) => task.text);
+}
+
+let tasks = loadTasks();
+
+function saveTasks() {
+  writeStorage(tasks);
+}
+
+function createTodoItem(task) {
   const listItem = document.createElement('li');
   listItem.className = 'todo-item';
 
@@ -13,15 +64,20 @@ function createTodoItem(value) {
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
   checkbox.className = 'todo-checkbox';
+  checkbox.checked = task.completed;
 
   const text = document.createElement('span');
   text.className = 'todo-text';
-  text.textContent = value;
+  text.textContent = task.text;
+
+  if (task.completed) {
+    text.classList.add('completed');
+  }
 
   const editInput = document.createElement('input');
   editInput.type = 'text';
   editInput.className = 'edit-input';
-  editInput.value = value;
+  editInput.value = task.text;
   editInput.setAttribute('aria-label', 'Görevi düzenle');
 
   const editButton = document.createElement('button');
@@ -43,30 +99,30 @@ function createTodoItem(value) {
   listItem.appendChild(deleteButton);
 
   checkbox.addEventListener('change', () => {
-    text.classList.toggle('completed', checkbox.checked);
+    task.completed = checkbox.checked;
+    text.classList.toggle('completed', task.completed);
+    saveTasks();
   });
 
   const saveEdit = () => {
     const updatedValue = editInput.value.trim();
 
     if (updatedValue) {
+      task.text = updatedValue;
       text.textContent = updatedValue;
-      text.style.display = 'inline';
-      editInput.style.display = 'none';
-      listItem.classList.remove('editing');
-      editButton.textContent = 'Düzenle';
-      return;
+    } else {
+      editInput.value = task.text;
     }
 
-    editInput.value = text.textContent;
     text.style.display = 'inline';
     editInput.style.display = 'none';
     listItem.classList.remove('editing');
     editButton.textContent = 'Düzenle';
+    saveTasks();
   };
 
   const cancelEdit = () => {
-    editInput.value = text.textContent;
+    editInput.value = task.text;
     text.style.display = 'inline';
     editInput.style.display = 'none';
     listItem.classList.remove('editing');
@@ -88,6 +144,13 @@ function createTodoItem(value) {
   });
 
   deleteButton.addEventListener('click', () => {
+    const taskIndex = tasks.findIndex((item) => item === task);
+
+    if (taskIndex !== -1) {
+      tasks.splice(taskIndex, 1);
+      saveTasks();
+    }
+
     listItem.remove();
   });
 
@@ -110,6 +173,14 @@ function createTodoItem(value) {
   return listItem;
 }
 
+function renderTasks() {
+  todoList.innerHTML = '';
+
+  tasks.forEach((task) => {
+    todoList.appendChild(createTodoItem(task));
+  });
+}
+
 function addTodo() {
   const value = todoInput.value.trim();
 
@@ -118,8 +189,13 @@ function addTodo() {
     return;
   }
 
-  const listItem = createTodoItem(value);
-  todoList.appendChild(listItem);
+  tasks.push({
+    text: value,
+    completed: false
+  });
+
+  saveTasks();
+  renderTasks();
 
   todoInput.value = '';
   todoInput.focus();
@@ -128,7 +204,9 @@ function addTodo() {
 addButton.addEventListener('click', addTodo);
 
 clearAllButton.addEventListener('click', () => {
-  todoList.innerHTML = '';
+  tasks = [];
+  saveTasks();
+  renderTasks();
 });
 
 todoInput.addEventListener('keydown', (event) => {
@@ -136,3 +214,5 @@ todoInput.addEventListener('keydown', (event) => {
     addTodo();
   }
 });
+
+renderTasks();
