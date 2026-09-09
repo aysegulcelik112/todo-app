@@ -1,6 +1,7 @@
 const todoInput = document.getElementById('todo-input');
 const addButton = document.getElementById('add-btn');
 const todoList = document.getElementById('todo-list');
+const clearAllButton = document.getElementById('clear-all-btn');
 
 function createTodoItem(value) {
   const listItem = document.createElement('li');
@@ -125,6 +126,10 @@ function addTodo() {
 }
 
 addButton.addEventListener('click', addTodo);
+
+clearAllButton.addEventListener('click', () => {
+  todoList.innerHTML = '';
+});
 
 todoInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {

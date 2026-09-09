@@ -93,6 +93,33 @@ button {
   transform: translateY(0);
 }
 
+.list-topbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 14px;
+}
+
+#clear-all-btn {
+  background: transparent;
+  color: #ff7b7b;
+  border: 2px solid rgba(255, 123, 123, 0.8);
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 10px;
+  transition: transform 0.18s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+#clear-all-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 123, 123, 0.08);
+  box-shadow: 0 0 12px rgba(255, 123, 123, 0.2);
+}
+
+#clear-all-btn:active {
+  transform: translateY(0);
+}
+
 .todo-list {
   list-style: none;
   margin: 0;
