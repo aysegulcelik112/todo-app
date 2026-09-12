@@ -185,6 +185,7 @@ function addTodo() {
   const value = todoInput.value.trim();
 
   if (!value) {
+    showErrorMessage('⚠ Lütfen bir görev yazın!');
     todoInput.focus();
     return;
   }
@@ -199,6 +200,40 @@ function addTodo() {
 
   todoInput.value = '';
   todoInput.focus();
+}
+
+function showErrorMessage(message) {
+  // Mevcut uyarıyı kaldır
+  const existingError = document.querySelector('.error-message');
+  if (existingError) {
+    existingError.remove();
+  }
+
+  // Yeni uyarı oluştur
+  const errorDiv = document.createElement('div');
+  errorDiv.className = 'error-message';
+  errorDiv.textContent = message;
+
+  // Form'dan sonra ekle
+  const form = document.querySelector('.todo-form');
+  form.parentElement.insertBefore(errorDiv, form.nextSibling);
+
+  // Input'a hata stili ekle
+  todoInput.classList.add('error-shake');
+
+  // 3 saniye sonra kaldır
+  setTimeout(() => {
+    errorDiv.style.opacity = '0';
+    errorDiv.style.transform = 'translateY(-20px)';
+    setTimeout(() => {
+      errorDiv.remove();
+    }, 300);
+  }, 3000);
+
+  // Shake animasyonunu kaldır
+  setTimeout(() => {
+    todoInput.classList.remove('error-shake');
+  }, 500);
 }
 
 addButton.addEventListener('click', addTodo);
