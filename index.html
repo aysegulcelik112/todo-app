@@ -19,18 +19,88 @@
         <div class="quote-mark">"</div>
       </div>
 
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <button id="theme-btn" class="icon-btn" title="Tema Değiştir">🎨</button>
+        <button id="stats-btn" class="icon-btn" title="İstatistikler">📊</button>
+        <button id="export-btn" class="icon-btn" title="Dışa Aktar">📤</button>
+        <button id="import-btn" class="icon-btn" title="İçe Aktar">📥</button>
+      </div>
+
+      <!-- Gamification Bar -->
+      <div class="gamification-bar">
+        <div class="level-badge">
+          <span class="level-icon">⭐</span>
+          <span>Seviye <span id="user-level">1</span></span>
+        </div>
+        <div class="xp-container">
+          <div class="xp-bar">
+            <div id="xp-fill" class="xp-fill" style="width: 0%"></div>
+          </div>
+          <span class="xp-text"><span id="current-xp">0</span> / <span id="max-xp">100</span> XP</span>
+        </div>
+        <div class="streak-badge">
+          <span class="streak-icon">🔥</span>
+          <span id="streak-count">0</span> gün
+        </div>
+      </div>
+
       <div class="todo-form">
-        <input
-          id="todo-input"
-          type="text"
-          placeholder="Yapılacak bir görev yazın..."
-          aria-label="Yapılacak görev"
-        />
-        <button id="add-btn" type="button">Ekle</button>
+        <div class="form-main">
+          <input
+            id="todo-input"
+            type="text"
+            placeholder="Yapılacak bir görev yazın... (Ctrl+Enter)"
+            aria-label="Yapılacak görev"
+          />
+          <button id="add-btn" type="button">Ekle</button>
+        </div>
+        <div class="form-options">
+          <select id="priority-select" class="priority-select">
+            <option value="low">🟢 Düşük Öncelik</option>
+            <option value="medium" selected>🟡 Orta Öncelik</option>
+            <option value="high">🔴 Yüksek Öncelik</option>
+          </select>
+          <select id="category-select" class="category-select">
+            <option value="work">💼 İş</option>
+            <option value="personal">🏠 Kişisel</option>
+            <option value="shopping">🛒 Alışveriş</option>
+            <option value="health">💪 Sağlık</option>
+            <option value="learning">📚 Öğrenme</option>
+            <option value="other">📌 Diğer</option>
+          </select>
+          <input type="date" id="deadline-input" class="deadline-input" />
+          <select id="repeat-select" class="repeat-select">
+            <option value="none">🔁 Tekrar Yok</option>
+            <option value="daily">📅 Günlük</option>
+            <option value="weekly">📆 Haftalık</option>
+            <option value="monthly">🗓️ Aylık</option>
+          </select>
+        </div>
       </div>
 
       <div class="list-topbar">
-        <button id="clear-all-btn" type="button">Tümünü Sil</button>
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">Tümü</button>
+          <button class="filter-btn" data-filter="active">Aktif</button>
+          <button class="filter-btn" data-filter="completed">Tamamlanan</button>
+          <button class="filter-btn" data-filter="starred">⭐ Yıldızlı</button>
+          <button class="filter-btn" data-filter="today">📅 Bugün</button>
+          <button class="filter-btn" data-filter="week">📆 Bu Hafta</button>
+        </div>
+        <div class="action-buttons">
+          <select id="category-filter" class="category-filter">
+            <option value="all">🏷️ Tüm Kategoriler</option>
+            <option value="work">💼 İş</option>
+            <option value="personal">🏠 Kişisel</option>
+            <option value="shopping">🛒 Alışveriş</option>
+            <option value="health">💪 Sağlık</option>
+            <option value="learning">📚 Öğrenme</option>
+            <option value="other">📌 Diğer</option>
+          </select>
+          <input type="text" id="search-input" class="search-input" placeholder="🔍 Ara... (Ctrl+/)" />
+          <button id="clear-all-btn" type="button">Tümünü Sil</button>
+        </div>
       </div>
 
       <ul id="todo-list" class="todo-list" aria-live="polite"></ul>
@@ -50,6 +120,94 @@
             <span class="stat-icon">○</span>
             <span id="pending-count">0</span> Bekliyor
           </span>
+        </div>
+        <div class="category-stats" id="category-stats"></div>
+      </div>
+    </div>
+
+    <!-- Theme Modal -->
+    <div id="theme-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>🎨 Tema Seç</h2>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="theme-grid">
+          <div class="theme-card" data-theme="retro">
+            <div class="theme-preview retro-preview"></div>
+            <p>80s Retro</p>
+          </div>
+          <div class="theme-card" data-theme="dark">
+            <div class="theme-preview dark-preview"></div>
+            <p>Dark Mode</p>
+          </div>
+          <div class="theme-card" data-theme="minimal">
+            <div class="theme-preview minimal-preview"></div>
+            <p>Minimal</p>
+          </div>
+          <div class="theme-card" data-theme="neon">
+            <div class="theme-preview neon-preview"></div>
+            <p>Neon 90s</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Modal -->
+    <div id="stats-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>📊 İstatistikler</h2>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="stats-content">
+          <div class="stat-card">
+            <h3>🏆 Başarımlar</h3>
+            <div id="achievements" class="achievements-grid"></div>
+          </div>
+          <div class="stat-card">
+            <h3>📈 Verimlilik</h3>
+            <div class="productivity-score">
+              <div class="score-circle">
+                <span id="productivity-score">0</span>%
+              </div>
+              <p>Verimlilik Skoru</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <h3>📊 Kategori Dağılımı</h3>
+            <div id="category-chart" class="category-chart"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div id="export-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>📤 Dışa Aktar</h2>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="export-options">
+          <button id="export-json" class="export-btn">📄 JSON İndir</button>
+          <button id="export-csv" class="export-btn">📊 CSV İndir</button>
+          <button id="export-print" class="export-btn">🖨️ Yazdır</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div id="import-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>📥 İçe Aktar</h2>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="import-options">
+          <input type="file" id="import-file" accept=".json" style="display: none;" />
+          <button id="import-json" class="export-btn">📄 JSON Yükle</button>
+          <p class="import-note">Not: Mevcut verileriniz korunacaktır.</p>
         </div>
       </div>
     </div>
