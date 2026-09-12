@@ -102,6 +102,7 @@ function createTodoItem(task) {
     task.completed = checkbox.checked;
     text.classList.toggle('completed', task.completed);
     saveTasks();
+    updateTaskCounter();
   });
 
   const saveEdit = () => {
@@ -179,6 +180,25 @@ function renderTasks() {
   tasks.forEach((task) => {
     todoList.appendChild(createTodoItem(task));
   });
+
+  updateTaskCounter();
+}
+
+function updateTaskCounter() {
+  const totalCount = tasks.length;
+  const completedCount = tasks.filter(task => task.completed).length;
+  const pendingCount = totalCount - completedCount;
+
+  document.getElementById('task-count').textContent = totalCount;
+  document.getElementById('completed-count').textContent = completedCount;
+  document.getElementById('pending-count').textContent = pendingCount;
+
+  // Animasyon efekti
+  const counterNumber = document.getElementById('task-count');
+  counterNumber.style.transform = 'scale(1.2)';
+  setTimeout(() => {
+    counterNumber.style.transform = 'scale(1)';
+  }, 200);
 }
 
 function addTodo() {

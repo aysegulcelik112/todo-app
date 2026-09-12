@@ -10,6 +10,15 @@
     <div class="app">
       <h1>Kodlama Ajandam</h1>
 
+      <div class="quote-banner">
+        <div class="quote-mark">"</div>
+        <div class="quote-content">
+          <p class="quote-text">Eylem, tüm başarının temel anahtarıdır.</p>
+          <p class="quote-author">— Pablo Picasso</p>
+        </div>
+        <div class="quote-mark">"</div>
+      </div>
+
       <div class="todo-form">
         <input
           id="todo-input"
@@ -25,6 +34,24 @@
       </div>
 
       <ul id="todo-list" class="todo-list" aria-live="polite"></ul>
+
+      <div class="todo-counter">
+        <div class="counter-badge">
+          <span class="counter-label">Toplam Görev:</span>
+          <span id="task-count" class="counter-number">0</span>
+        </div>
+        <div class="counter-stats">
+          <span class="stat-item">
+            <span class="stat-icon">✓</span>
+            <span id="completed-count">0</span> Tamamlandı
+          </span>
+          <span class="stat-divider">|</span>
+          <span class="stat-item">
+            <span class="stat-icon">○</span>
+            <span id="pending-count">0</span> Bekliyor
+          </span>
+        </div>
+      </div>
     </div>
 
     <script src="script.js"></script>

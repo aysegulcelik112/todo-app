@@ -122,6 +122,78 @@ h1::after {
   color: var(--accent-teal);
 }
 
+.quote-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px 40px;
+  background: 
+    linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(212, 165, 95, 0.08) 20%, 
+      rgba(212, 165, 95, 0.08) 80%, 
+      transparent 100%
+    ),
+    var(--paper-light);
+  border-bottom: 1px dashed var(--ink-fade);
+  position: relative;
+}
+
+.quote-banner::before {
+  content: '❖';
+  position: absolute;
+  left: 40px;
+  color: var(--accent-rust);
+  font-size: 1.2em;
+  opacity: 0.5;
+}
+
+.quote-banner::after {
+  content: '❖';
+  position: absolute;
+  right: 40px;
+  color: var(--accent-teal);
+  font-size: 1.2em;
+  opacity: 0.5;
+}
+
+.quote-mark {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 3rem;
+  line-height: 1;
+  color: var(--accent-mustard);
+  opacity: 0.6;
+  font-weight: 700;
+}
+
+.quote-content {
+  flex: 1;
+  text-align: center;
+  max-width: 500px;
+}
+
+.quote-text {
+  margin: 0 0 8px 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--ink);
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.quote-author {
+  margin: 0;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.85rem;
+  color: var(--ink-fade);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
 .todo-form {
   display: flex;
   gap: 12px;
@@ -307,11 +379,109 @@ button:active {
 .todo-list {
   list-style: none;
   margin: 0;
-  padding: 28px 40px 36px;
+  padding: 28px 40px 24px;
   display: flex;
   flex-direction: column;
   gap: 14px;
   background: var(--paper-light);
+}
+
+.todo-counter {
+  padding: 24px 40px 32px;
+  background: 
+    repeating-linear-gradient(135deg, transparent, transparent 10px, rgba(26, 22, 20, 0.02) 10px, rgba(26, 22, 20, 0.02) 20px),
+    var(--paper-cream);
+  border-top: 2px solid var(--border-dark);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.counter-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 28px;
+  background: 
+    linear-gradient(135deg, var(--accent-teal) 0%, #246166 100%);
+  border: 3px solid var(--border-dark);
+  box-shadow: 
+    4px 4px 0 rgba(26, 22, 20, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  font-family: 'Courier Prime', monospace;
+  position: relative;
+}
+
+.counter-badge::before,
+.counter-badge::after {
+  content: '◆';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent-mustard);
+  font-size: 0.8em;
+  opacity: 0.8;
+}
+
+.counter-badge::before {
+  left: 8px;
+}
+
+.counter-badge::after {
+  right: 8px;
+}
+
+.counter-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+.counter-number {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent-mustard);
+  text-shadow: 
+    2px 2px 0 rgba(0, 0, 0, 0.3),
+    0 0 10px rgba(212, 165, 95, 0.5);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+  min-width: 32px;
+  text-align: center;
+}
+
+.counter-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.9rem;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 2px solid var(--border-dark);
+  box-shadow: 2px 2px 0 rgba(26, 22, 20, 0.1);
+}
+
+.stat-icon {
+  font-size: 1.1em;
+  color: var(--accent-rust);
+}
+
+.stat-divider {
+  color: var(--ink-fade);
+  font-weight: 400;
 }
 
 .todo-item {
@@ -444,6 +614,29 @@ button:active {
     font-size: 0.6em;
   }
 
+  .quote-banner {
+    padding: 20px 24px;
+    gap: 12px;
+  }
+
+  .quote-banner::before,
+  .quote-banner::after {
+    display: none;
+  }
+
+  .quote-mark {
+    font-size: 2rem;
+    display: none;
+  }
+
+  .quote-text {
+    font-size: 0.95rem;
+  }
+
+  .quote-author {
+    font-size: 0.75rem;
+  }
+
   .todo-form {
     flex-direction: column;
     padding: 20px 24px;
@@ -475,7 +668,44 @@ button:active {
   }
 
   .todo-list {
+    padding: 20px 24px 20px;
+  }
+
+  .todo-counter {
     padding: 20px 24px 28px;
+  }
+
+  .counter-badge {
+    padding: 12px 20px;
+    gap: 10px;
+  }
+
+  .counter-badge::before,
+  .counter-badge::after {
+    display: none;
+  }
+
+  .counter-label {
+    font-size: 0.75rem;
+  }
+
+  .counter-number {
+    font-size: 1.5rem;
+  }
+
+  .counter-stats {
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.8rem;
+  }
+
+  .stat-divider {
+    display: none;
+  }
+
+  .stat-item {
+    width: 100%;
+    justify-content: center;
   }
 
   .todo-item {
